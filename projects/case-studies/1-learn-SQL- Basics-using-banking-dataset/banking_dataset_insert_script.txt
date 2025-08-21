@@ -1,0 +1,244 @@
+create database bankdb;
+drop table if exists Customer_Accounts;
+drop table if exists Transactions;
+drop table if exists Accounts;
+drop table if exists Customers;
+drop table if exists products;
+drop table if exists Employees;
+
+
+create table products
+(
+	prod_id		varchar(10) primary key,
+	prod_name	varchar(100) not null
+);
+
+create table Employees
+(
+	Emp_ID		varchar(10),
+	Emp_Name	varchar(100),
+	Salary		float,
+	gender		varchar(10) check (gender in ('M', 'F')),
+	constraint pk_emp primary key (emp_id)
+);
+
+create table Customers
+(
+	Customer_ID		varchar(10),
+	First_Name		varchar(40),
+	Last_Name		varchar(40),
+	Phone			bigint,
+	Address			varchar(200),
+	dob				date,
+	constraint pk_cust primary key(customer_id)
+);
+
+create table Accounts
+(
+	Account_No			bigint primary key,
+	Balance				int,
+	Account_Status		varchar(10) check (Account_Status in ('Active', 'Inactive', 'Suspended', 'On hold')),
+	Date_of_Opening		date
+);
+
+create table Transactions
+(
+	Transaction_ID		int generated always as identity,
+	Transaction_Date	date,
+	Transaction_amount	float,
+	Credit_Debit_flag	varchar(1),
+	Account_No			bigint,
+	constraint fk_acc foreign key (Account_No) references Accounts(Account_No)
+);
+
+create table Customer_Accounts
+(
+	Customer_ID		varchar(10),
+	Account_No		bigint,
+	prod_id			varchar(10),
+	constraint fk_acc1 foreign key (Customer_ID) references Customers(Customer_ID),
+	constraint fk_acc2 foreign key (Account_No) references Accounts(Account_No),
+	constraint fk_acc3 foreign key (prod_id) references Products(prod_id)
+);
+
+
+insert into products values ('PRD0001', 'Savings Account');
+insert into products (prod_id, prod_name) values ('PRD0002', 'Current Account');
+insert into products values ('PRD0003', 'Home Loan');
+insert into products values ('PRD0004', 'Personal Loan');
+
+insert into Employees values
+	('E1', 'Mohan Kumar', 5000, 'M'),
+	('E2', 'James Bond', 6000, 'M'),
+	('E3', 'David Smith', 7000, 'M'),
+	('E4', 'Alice Mathew', 5000, 'F');
+
+insert into Customers values ('C1', 'Satya', 'Sharma', 9900889911, 'Bangalore', to_date('01-03-1990', 'dd-mm-yyyy'));
+insert into Customers values ('C2', 'Jaswinder', 'Singh', 9900889922, 'Mumbai', to_date('024-03-1980', 'dd-mm-yyyy'));
+insert into Customers values ('C3', 'Satya', 'Sharma', 9900889933, 'Pune', to_date('11-08-1992', 'dd-mm-yyyy'));
+insert into Customers values ('C4', 'Maryam', 'Parveen', 9900889944, 'Delhi', to_date('01-12-1993', 'dd-mm-yyyy'));
+insert into Customers values ('C5', 'Steven', 'Smith', null, 'Chennai', to_date('20-12-1994', 'dd-mm-yyyy'));
+insert into Customers values ('C6', 'Jason', 'Holder', null, 'Chennai', to_date('01-02-1995', 'dd-mm-yyyy'));
+
+insert into Accounts values (1100444101, 100, 'Active', to_date('01-01-2020','dd-mm-yyyy'));
+insert into Accounts values (1100444102, 900, 'Active', to_date('10-01-2020','dd-mm-yyyy'));
+insert into Accounts values (1100444103, 500, 'Active', to_date('21-11-2021','dd-mm-yyyy'));
+insert into Accounts values (1100444104, 1100, 'Active', to_date('15-10-2022','dd-mm-yyyy'));
+insert into Accounts values (1100444105, 2200, 'Active', to_date('10-12-2022','dd-mm-yyyy'));
+insert into Accounts values (1100444106, 3300, 'Active', to_date('05-11-2022','dd-mm-yyyy'));
+
+insert into Transactions values (default,current_date, 200, 'C', 1100444101);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-1, 100, 'C', 1100444101);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-1, 50, 'D', 1100444101);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-1, 100, 'C', 1100444102);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-2, 200, 'C', 1100444102);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-2, 100, 'D', 1100444102);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-3, 100, 'C', 1100444103);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-4, 200, 'C', 1100444104);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-5, 100, 'C', 1100444105);
+insert into Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) values (current_date-5, 200, 'D', 1100444105);
+
+insert into Customer_Accounts values ('C1', 1100444101, 'PRD0001');
+insert into Customer_Accounts values ('C1', 1100444102, 'PRD0003');
+insert into Customer_Accounts values ('C1', 1100444103, 'PRD0004');
+insert into Customer_Accounts values ('C2', 1100444105, 'PRD0002');
+insert into Customer_Accounts values ('C3', 1100444106, 'PRD0002');
+insert into Customer_Accounts values ('C1', 1100444104, 'PRD0004');
+
+
+select * from products;
+select * from Employees;
+select * from Customers;
+select * from Accounts;
+select * from Transactions;
+select * from Customer_Accounts;
+
+
+
+
+==============================================================================
+***************************** SQL SERVER IMPORT ******************************
+==============================================================================
+
+-- Complete SQL Server Bank Database Script
+
+CREATE DATABASE bankdb;
+GO
+
+USE bankdb;
+GO
+
+-- Drop tables if they exist
+DROP TABLE IF EXISTS Customer_Accounts;
+DROP TABLE IF EXISTS Transactions;
+DROP TABLE IF EXISTS Accounts;
+DROP TABLE IF EXISTS Customers;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS Employees;
+
+-- Create tables
+CREATE TABLE products
+(
+	prod_id		VARCHAR(10) PRIMARY KEY,
+	prod_name	VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Employees
+(
+	Emp_ID		VARCHAR(10),
+	Emp_Name	VARCHAR(100),
+	Salary		FLOAT,
+	gender		VARCHAR(10) CHECK (gender IN ('M', 'F')),
+	CONSTRAINT pk_emp PRIMARY KEY (emp_id)
+);
+
+CREATE TABLE Customers
+(
+	Customer_ID		VARCHAR(10),
+	First_Name		VARCHAR(40),
+	Last_Name		VARCHAR(40),
+	Phone			BIGINT,
+	Address			VARCHAR(200),
+	dob				DATE,
+	CONSTRAINT pk_cust PRIMARY KEY(customer_id)
+);
+
+CREATE TABLE Accounts
+(
+	Account_No			BIGINT PRIMARY KEY,
+	Balance				INT,
+	Account_Status		VARCHAR(10) CHECK (Account_Status IN ('Active', 'Inactive', 'Suspended', 'On hold')),
+	Date_of_Opening		DATE
+);
+
+CREATE TABLE Transactions
+(
+	Transaction_ID		INT IDENTITY(1,1),
+	Transaction_Date	DATE,
+	Transaction_amount	FLOAT,
+	Credit_Debit_flag	VARCHAR(1),
+	Account_No			BIGINT,
+	CONSTRAINT fk_acc FOREIGN KEY (Account_No) REFERENCES Accounts(Account_No)
+);
+
+CREATE TABLE Customer_Accounts
+(
+	Customer_ID		VARCHAR(10),
+	Account_No		BIGINT,
+	prod_id			VARCHAR(10),
+	CONSTRAINT fk_acc1 FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID),
+	CONSTRAINT fk_acc2 FOREIGN KEY (Account_No) REFERENCES Accounts(Account_No),
+	CONSTRAINT fk_acc3 FOREIGN KEY (prod_id) REFERENCES Products(prod_id)
+);
+
+-- Insert data
+INSERT INTO products VALUES ('PRD0001', 'Savings Account');
+INSERT INTO products (prod_id, prod_name) VALUES ('PRD0002', 'Current Account');
+INSERT INTO products VALUES ('PRD0003', 'Home Loan');
+INSERT INTO products VALUES ('PRD0004', 'Personal Loan');
+
+INSERT INTO Employees VALUES
+	('E1', 'Mohan Kumar', 5000, 'M'),
+	('E2', 'James Bond', 6000, 'M'),
+	('E3', 'David Smith', 7000, 'M'),
+	('E4', 'Alice Mathew', 5000, 'F');
+
+INSERT INTO Customers VALUES ('C1', 'Satya', 'Sharma', 9900889911, 'Bangalore', '1990-03-01');
+INSERT INTO Customers VALUES ('C2', 'Jaswinder', 'Singh', 9900889922, 'Mumbai', '1980-03-24');
+INSERT INTO Customers VALUES ('C3', 'Satya', 'Sharma', 9900889933, 'Pune', '1992-08-11');
+INSERT INTO Customers VALUES ('C4', 'Maryam', 'Parveen', 9900889944, 'Delhi', '1993-12-01');
+INSERT INTO Customers VALUES ('C5', 'Steven', 'Smith', NULL, 'Chennai', '1994-12-20');
+INSERT INTO Customers VALUES ('C6', 'Jason', 'Holder', NULL, 'Chennai', '1995-02-01');
+
+INSERT INTO Accounts VALUES (1100444101, 100, 'Active', '2020-01-01');
+INSERT INTO Accounts VALUES (1100444102, 900, 'Active', '2020-01-10');
+INSERT INTO Accounts VALUES (1100444103, 500, 'Active', '2021-11-21');
+INSERT INTO Accounts VALUES (1100444104, 1100, 'Active', '2022-10-15');
+INSERT INTO Accounts VALUES (1100444105, 2200, 'Active', '2022-12-10');
+INSERT INTO Accounts VALUES (1100444106, 3300, 'Active', '2022-11-05');
+
+INSERT INTO Transactions VALUES (GETDATE(), 200, 'C', 1100444101);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -1, GETDATE()), 100, 'C', 1100444101);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -1, GETDATE()), 50, 'D', 1100444101);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -1, GETDATE()), 100, 'C', 1100444102);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -2, GETDATE()), 200, 'C', 1100444102);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -2, GETDATE()), 100, 'D', 1100444102);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -3, GETDATE()), 100, 'C', 1100444103);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -4, GETDATE()), 200, 'C', 1100444104);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -5, GETDATE()), 100, 'C', 1100444105);
+INSERT INTO Transactions (Transaction_Date, Transaction_Amount, Credit_Debit_flag, Account_No) VALUES (DATEADD(day, -5, GETDATE()), 200, 'D', 1100444105);
+
+INSERT INTO Customer_Accounts VALUES ('C1', 1100444101, 'PRD0001');
+INSERT INTO Customer_Accounts VALUES ('C1', 1100444102, 'PRD0003');
+INSERT INTO Customer_Accounts VALUES ('C1', 1100444103, 'PRD0004');
+INSERT INTO Customer_Accounts VALUES ('C2', 1100444105, 'PRD0002');
+INSERT INTO Customer_Accounts VALUES ('C3', 1100444106, 'PRD0002');
+INSERT INTO Customer_Accounts VALUES ('C1', 1100444104, 'PRD0004');
+
+-- Select statements to verify data
+SELECT * FROM products;
+SELECT * FROM Employees;
+SELECT * FROM Customers;
+SELECT * FROM Accounts;
+SELECT * FROM Transactions;
+SELECT * FROM Customer_Accounts;

@@ -1,0 +1,32 @@
+
+-- Solve the following SQL problems using the Sales Order dataset:
+
+	select * from customers;
+	select * from products;
+	select * from sales_order;
+
+
+1) Fetch all the small shipped orders from August 2003 till the end of year 2003.
+2) Find all the orders which do not belong to customers from USA and are still in process.
+3) Find all orders for Planes, Ships and Trains which are neither Shipped nor In Process nor Resolved.
+4) Find customers whose phone number has either parenthesis "()" or a plus sign "+".
+5) Find customers whose phone number does not have any space.
+6) Fetch all the orders between Feb 2003 and May 2003 where the quantity ordered was an even number.
+7) Find orders which sold the product for price higher than its original price.
+8) Find the average sales order price
+9) Count total no of orders.
+10) Find the total quantity sold.
+11) Fetch the first order date and the last order date.
+12) Find the average sales order price based on deal size
+13) Find total no of orders per each day. Sort data based on highest orders.
+14) Display the total sales figure for each quarter. Represent each quarter with their respective period.
+15) Identify how many cars, Motorcycles, trains and ships are available in the inventory.
+Treat all type of cars as just "Cars".
+16) Identify the vehicles in the inventory which are short in number.
+Shortage of vehicle is considered when there are less than 10 vehicles.
+17) Find the countries which have purchased more than 10 motorcycles.
+18) Find the orders where the sales amount is incorrect.
+19) Fetch the total sales done for each day.
+20) Fetch the top 3 months which have been doing the lowest sales.
+21) Find total no of orders per each day of the week (monday to sunday). Sort data based on highest orders.
+22) Find out the vehicles which was sold the most and which was sold the least. Output should be a single record with 2 columns. One column for most sold vehicle and other for least sold vehicle.
