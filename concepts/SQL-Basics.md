@@ -308,8 +308,7 @@ SET salary = salary * 2;
 -- This would update the salary of all employees and multiply it by 2. You could end up updating all records in your database!
 ```
 
-> **Note:**
-> 
+> [!IMPORTANT]
 > - Always use a filter condition when using `UPDATE` or `DELETE` commands, or try performing a SELECT statement first to verify the records you are trying to delete or update.
 > - We don't want to end up updating wrong records or all records in our database. If this is a production database containing millions of rows, you'll end up updating all records, which will cause significant problems.
 
@@ -456,10 +455,10 @@ SELECT
     RIGHT('1234_1234', 4) AS second_part;
 ```
 
-> **Tip:** 
+> [!TIP]
 > Use IF EXISTS with DROP commands to avoid errors. If you try to drop a table that doesn't exist, it will throw an error and create problems during query execution.
 
-> **Important:**
+> [!IMPORTANT]
 > When using aggregate functions with GROUP BY, the column you're grouping by needs to be in the SELECT statement. If that column is not included in the SELECT statement and only aggregations are used, that's fine, but you can't use other columns besides the grouped column.
 
 ```sql
