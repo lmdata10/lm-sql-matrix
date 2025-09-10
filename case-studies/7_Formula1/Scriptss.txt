@@ -1,0 +1,31 @@
+select count(1) from seasons; -- 74
+select count(1) from status; -- 139	
+select count(1) from circuits; -- 77
+select count(1) from races; -- 1102
+select count(1) from drivers; -- 857
+select count(1) from constructors; -- 211
+select count(1) from constructor_results; -- 12170
+select count(1) from constructor_standings; -- 12941
+select count(1) from driver_standings; -- 33902
+select count(1) from lap_times; -- 538121
+select count(1) from pit_stops; -- 9634
+select count(1) from qualifying; -- 9575
+select count(1) from results; -- 25840
+select count(1) from sprint_results; -- 120
+
+
+select * from seasons; -- 74
+select * from status; -- 139	
+select * from circuits; -- 77
+select * from races; -- 1102
+select * from drivers; -- 857
+select * from constructors; -- 211
+select * from constructor_results; -- 12170
+select * from constructor_standings; -- 12941
+select * from driver_standings; -- 33902
+select * from lap_times; -- 538121
+select * from pit_stops; -- 9634
+select * from qualifying; -- 9575
+select * from results; -- 25840
+select * from sprint_results; -- 120
+
