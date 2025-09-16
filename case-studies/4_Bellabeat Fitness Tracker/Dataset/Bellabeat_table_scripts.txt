@@ -55,5 +55,3 @@ create table sleep_day
 select * from daily_activity;
 select * from weight_log;
 select * from sleep_day;
-
-
