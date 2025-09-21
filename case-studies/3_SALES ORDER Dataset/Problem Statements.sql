@@ -264,6 +264,84 @@ FROM
 	GROUP BY p.product_line
 	ORDER BY SUM(s.quantity_ordered)
 	LIMIT 1
-	) sub2
+	) sub2;
 
 
+/*
+23) Find the most profitable orders. 
+Most profitable orders are those whose sale price exceeded the average sale price for each city
+and whose deal size was not small.
+*/
+WITH cte AS(
+SELECT
+	c.city
+	,ROUND(CAST(AVG(sales) AS DECIMAL),2) AS average_sales_order_price
+FROM sales_order s 
+JOIN customers c ON c.customer_id = s.customer
+GROUP BY c.city
+)
+
+SELECT
+	s.order_number
+FROM sales_order s
+JOIN customers c ON c.customer_id = s.customer
+JOIN cte cte ON cte.city = c.city
+WHERE s.deal_size <> 'Small'
+	AND s.sales > cte.average_sales_order_price;
+
+-- 24) Find the difference in average sales for each month of 2003 and 2004.
+
+-- Two CTE method
+WITH AVG_2003 AS (
+    SELECT
+        month_id AS id_2003
+        ,TO_CHAR(order_date, 'Month') AS month_name_2003
+        ,ROUND(CAST(AVG(price_each) AS DECIMAL),2) AS avg_price_2003
+    FROM sales_order
+    WHERE year_id = 2003
+    GROUP BY month_id, TO_CHAR(order_date, 'Month')
+),
+AVG_2004 AS (
+    SELECT
+        month_id AS id_2004
+        ,TO_CHAR(order_date, 'Month') AS month_name_2004
+        ,ROUND(CAST(AVG(price_each) AS DECIMAL),2) AS avg_price_2004
+    FROM sales_order
+    WHERE year_id = 2004
+    GROUP BY month_id, TO_CHAR(order_date, 'Month')
+)
+SELECT 
+    a23.id_2003,
+    a23.month_name_2003,
+    a23.avg_price_2003,
+    a24.avg_price_2004,
+    (a24.avg_price_2004 - a23.avg_price_2003) AS difference
+FROM AVG_2003 a23
+JOIN AVG_2004 a24 
+    ON a23.id_2003 = a24.id_2004
+ORDER BY a23.id_2003;
+
+-- SELF JOIN method
+
+WITH cte AS (
+    SELECT
+        year_id
+        ,month_id
+        ,ROUND(CAST(AVG(price_each) AS DECIMAL),2) AS avg_price
+    FROM sales_order
+    WHERE year_id IN (2003, 2004)
+    GROUP BY year_id, month_id
+)
+SELECT 
+    y3.year_id,
+    y3.month_id,
+	y3.avg_price,
+	y4.year_id,
+    y4.month_id,
+    y4.avg_price,
+    (y4.avg_price - y3.avg_price) AS difference
+FROM cte y3
+JOIN cte y4 
+    ON y3.month_id = y4.month_id
+WHERE y3.year_id = 2003 AND y4.year_id = 2004
+ORDER BY y3.month_id;
