@@ -1,0 +1,49 @@
+CREATE DATABASE sql_problems;
+
+-- Drop and recreate EU energy table
+DROP TABLE IF EXISTS fb_eu_energy;
+CREATE TABLE fb_eu_energy (
+    date        DATE,
+    consumption INT
+);
+
+-- Drop and recreate Asia energy table
+DROP TABLE IF EXISTS fb_asia_energy;
+CREATE TABLE fb_asia_energy (
+    date        DATE,
+    consumption INT
+);
+
+-- Drop and recreate NA energy table
+DROP TABLE IF EXISTS fb_na_energy;
+CREATE TABLE fb_na_energy (
+    date        DATE,
+    consumption INT
+);
+
+-- Insert data into EU table
+INSERT INTO fb_eu_energy VALUES ('2020-01-01', 400);
+INSERT INTO fb_eu_energy VALUES ('2020-01-02', 350);
+INSERT INTO fb_eu_energy VALUES ('2020-01-03', 500);
+INSERT INTO fb_eu_energy VALUES ('2020-01-04', 500);
+INSERT INTO fb_eu_energy VALUES ('2020-01-07', 600);
+
+-- Insert data into Asia table
+INSERT INTO fb_asia_energy VALUES ('2020-01-01', 400);
+INSERT INTO fb_asia_energy VALUES ('2020-01-02', 400);
+INSERT INTO fb_asia_energy VALUES ('2020-01-04', 675);
+INSERT INTO fb_asia_energy VALUES ('2020-01-05', 1200);
+INSERT INTO fb_asia_energy VALUES ('2020-01-06', 750);
+INSERT INTO fb_asia_energy VALUES ('2020-01-07', 400);
+
+-- Insert data into NA table
+INSERT INTO fb_na_energy VALUES ('2020-01-01', 250);
+INSERT INTO fb_na_energy VALUES ('2020-01-02', 375);
+INSERT INTO fb_na_energy VALUES ('2020-01-03', 600);
+INSERT INTO fb_na_energy VALUES ('2020-01-06', 500);
+INSERT INTO fb_na_energy VALUES ('2020-01-07', 250);
+
+-- Check the data
+SELECT * FROM fb_eu_energy;
+SELECT * FROM fb_asia_energy;
+SELEC
