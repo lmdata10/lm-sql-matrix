@@ -63,7 +63,7 @@ CREATE TABLE students (
 -- Insert data into students table
 INSERT INTO students VALUES
 (101, 'Alice', 'Math', 85),
-(102, 'Bob', 'Math', 90),
+(102, 'Bob', 'Math', 88),
 (103, 'Charlie', 'Math', 85),
 (104, 'David', 'Math', 95),
 (105, 'Emma', 'Science', 88),
@@ -115,6 +115,33 @@ SELECT student_id, student_name, subject, marks,
        DENSE_RANK() OVER(PARTITION BY subject ORDER BY marks DESC) AS dense_marks_rank
 FROM students;
 ```
+
+###### ROW_NUMBER(), RANK(), DENSE_RANK()
+
+```SQL
+SELECT *
+	,ROW_NUMBER() OVER(PARTITION BY subject ORDER BY student_id DESC) AS row_num
+	,RANK() OVER(PARTITION BY subject ORDER BY marks DESC) AS rnk
+	,DENSE_RANK() OVER(PARTITION BY subject ORDER BY marks DESC) AS dns_rnk
+FROM students;
+```
+> OUTPUT
+
+| student_id | student_name | subject | marks | row_num | rnk | dns_rnk |
+| ---------- | ------------ | ------- | ----- | ------- | --- | ------- |
+| 112        | Liam         | English | 75    | 2       | 5   | 5       |
+| 104        | David        | Math    | 95    | 2       | 1   | 1       |
+| 113        | Mia          | Math    | 88    | 1       | 2   | 2       |
+| 102        | Bob          | Math    | 88    | 4       | 2   | 2       |
+| 101        | Alice        | Math    | 85    | 5       | 4   | 3       |
+| 103        | Charlie      | Math    | 85    | 3       | 4   | 3       |
+| 108        | Hannah       | Science | 92    | 2       | 1   | 1       |
+| 106        | Fiona        | Science | 92    | 4       | 1   | 1       |
+| 105        | Emma         | Science | 88    | 5       | 3   | 2       |
+| 114        | Noah         | Science | 85    | 1       | 4   | 3       |
+| 107        | George       | Science | 78    | 3       | 5   | 4       |
+
+
 ###### 4. FIRST_VALUE()
 
 - **Analogy:** Picture a leaderboard for each subject showing the name of the student with the highest marks at the top.
@@ -149,6 +176,59 @@ SELECT student_id, student_name, subject, marks,
            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS second_highest_scorer
 FROM students;
 ```
+###### Understanding `FIRST_VALUE()` and `LAST_VALUE()` Window Functions
+
+```sql
+SELECT
+    *
+    ,FIRST_VALUE(student_name) OVER(PARTITION BY subject ORDER BY marks DESC) AS top_scorer
+    -- Without Frame
+    ,LAST_VALUE(student_name) OVER(PARTITION BY subject ORDER BY marks DESC) AS lowest_scorer
+    ,LAST_VALUE(student_name) OVER(PARTITION BY subject ORDER BY marks DESC
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS true_lowest_scorer
+FROM students;
+```
+
+**Output Example**
+
+|student_id|student_name|subject|marks|top_scorer|lowest_scorer|true_lowest_scorer|
+|---|---|---|---|---|---|---|
+|111|Kelly|English|190|Kelly|Kelly|Liam|
+|115|Olivia|English|88|Kelly|Olivia|Liam|
+|110|James|English|85|Kelly|James|Liam|
+|109|Isabella|English|80|Kelly|Isabella|Liam|
+|112|Liam|English|75|Kelly|Liam|Liam|
+|104|David|Math|95|David|David|Alice|
+|102|Bob|Math|88|David|Mia|Alice|
+|113|Mia|Math|88|David|Mia|Alice|
+|103|Charlie|Math|85|David|Alice|Alice|
+|101|Alice|Math|85|David|Alice|Alice|
+|108|Hannah|Science|92|Hannah|Fiona|George|
+|106|Fiona|Science|92|Hannah|Fiona|George|
+|105|Emma|Science|88|Hannah|Emma|George|
+|114|Noah|Science|85|Hannah|Noah|George|
+|107|George|Science|78|Hannah|George|George|
+
+
+- **`FIRST_VALUE(student_name)`**  
+    Looks at the partition (`subject`), orders by marks descending, and picks the first row.  
+    This works fine with the default frame, since the first row is always included.
+
+- **`LAST_VALUE(student_name)` without a frame**  
+    Defaults to:  `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`
+    This frame stops at the current row, so the “last value” is always just the current student, not the true lowest scorer.  
+    This is why people often get tripped up by `LAST_VALUE()`.
+
+- **`LAST_VALUE(student_name)` with explicit frame**
+    `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`
+    Now the frame covers the **entire partition**, so `LAST_VALUE()` can see the actual last row (the lowest scorer).
+
+`ROWS` vs `RANGE`
+- **ROWS** → counts physical rows. Deterministic and predictable.
+- **RANGE** → groups rows with the same `ORDER BY` value. Useful when you want to collapse ties together, but can lead to surprises with duplicates.
+
+**Best practice in Databricks/Snowflake:**  
+Use **ROWS** for `LAST_VALUE()` (and most window functions) to ensure consistent, row-by-row behavior. Use **RANGE** only when your business logic explicitly requires tie grouping.
 
 ###### 7. LEAD()
 
@@ -238,48 +318,3 @@ SELECT student_id, student_name, subject, marks,
 FROM students;
 ```
 
-###### All-in-One Query: Show all window functions in a single query
-
-- **Purpose:** Combines all window functions in one query to display their results side by side for each student.
-
-```sql
-SELECT student_id
-	, student_name
-	, subject
-	, marks
-	, ROW_NUMBER() OVER(PARTITION BY subject ORDER BY student_id) AS row_num
-    , RANK() OVER(PARTITION BY subject ORDER BY marks DESC) AS marks_rank
-    , DENSE_RANK() OVER(PARTITION BY subject ORDER BY marks DESC) AS dense_marks_rank
-    , FIRST_VALUE(student_name) OVER(PARTITION BY subject ORDER BY marks DESC) AS top_scorer
-    , LAST_VALUE(student_name) OVER(PARTITION BY subject ORDER BY marks DESC
-           ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lowest_scorer
-    , NTH_VALUE(student_name, 2) OVER(PARTITION BY subject ORDER BY marks DESC
-           ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS second_highest_scorer
-    , LEAD(student_name) OVER(PARTITION BY subject ORDER BY marks DESC) AS next_lower_scorer
-    , LAG(student_name) OVER(PARTITION BY subject ORDER BY marks DESC) AS previous_higher_scorer
-    , COUNT(*) OVER(PARTITION BY subject) AS subject_student_count
-    , MIN(marks) OVER(PARTITION BY subject) AS min_marks_in_subject
-    , MAX(marks) OVER(PARTITION BY subject) AS max_marks_in_subject
-    , CUME_DIST() OVER(PARTITION BY subject ORDER BY marks) AS marks_cumulative_dist
-    , PERCENT_RANK() OVER(PARTITION BY subject ORDER BY marks) AS marks_percent_rank
-    , NTILE(4) OVER(PARTITION BY subject ORDER BY marks) AS marks_quartile
-FROM students;
-```
-
-| student_id | student_name | subject | marks | row_num | rnk | dense_marks_rank | first_value_top_score | last_value_low_score | LEAD_next_lower_scorer | LAG_previous_higher_scorer | subject_student_count | min_marks_in_subject | max_marks_in_subject | marks_cumulative_dist | marks_percent_rank | marks_quartile_ntile |
-| ---------- | ------------ | ------- | ----- | ------- | --- | ---------------- | --------------------- | -------------------- | ---------------------- | -------------------------- | --------------------- | -------------------- | -------------------- | --------------------- | ------------------ | -------------------- |
-| 112        | Liam         | English | 75    | 4       | 5   | 5                | Kelly                 | Liam                 | NULL                   | Isabella                   | 5                     | 75                   | 90                   | 0.2                   | 0                  | 1                    |
-| 109        | Isabella     | English | 80    | 1       | 4   | 4                | Kelly                 | Liam                 | Liam                   | James                      | 5                     | 75                   | 90                   | 0.4                   | 0.25               | 1                    |
-| 110        | James        | English | 85    | 2       | 3   | 3                | Kelly                 | Liam                 | Isabella               | Olivia                     | 5                     | 75                   | 90                   | 0.6                   | 0.5                | 2                    |
-| 115        | Olivia       | English | 88    | 5       | 2   | 2                | Kelly                 | Liam                 | James                  | Kelly                      | 5                     | 75                   | 90                   | 0.8                   | 0.75               | 3                    |
-| 111        | Kelly        | English | 90    | 3       | 1   | 1                | Kelly                 | Liam                 | Olivia                 | NULL                       | 5                     | 75                   | 90                   | 1                     | 1                  | 4                    |
-| 103        | Charlie      | Math    | 85    | 3       | 4   | 4                | David                 | Alice                | Alice                  | Mia                        | 5                     | 85                   | 95                   | 0.4                   | 0                  | 1                    |
-| 101        | Alice        | Math    | 85    | 1       | 4   | 4                | David                 | Alice                | NULL                   | Charlie                    | 5                     | 85                   | 95                   | 0.4                   | 0                  | 1                    |
-| 113        | Mia          | Math    | 88    | 5       | 3   | 3                | David                 | Alice                | Charlie                | Bob                        | 5                     | 85                   | 95                   | 0.6                   | 0.5                | 2                    |
-| 102        | Bob          | Math    | 90    | 2       | 2   | 2                | David                 | Alice                | Mia                    | David                      | 5                     | 85                   | 95                   | 0.8                   | 0.75               | 3                    |
-| 104        | David        | Math    | 95    | 4       | 1   | 1                | David                 | Alice                | Bob                    | NULL                       | 5                     | 85                   | 95                   | 1                     | 1                  | 4                    |
-| 107        | George       | Science | 78    | 3       | 5   | 4                | Fiona                 | George               | NULL                   | Noah                       | 5                     | 78                   | 92                   | 0.2                   | 0                  | 1                    |
-| 114        | Noah         | Science | 85    | 5       | 4   | 3                | Fiona                 | George               | George                 | Emma                       | 5                     | 78                   | 92                   | 0.4                   | 0.25               | 1                    |
-| 105        | Emma         | Science | 88    | 1       | 3   | 2                | Fiona                 | George               | Noah                   | Hannah                     | 5                     | 78                   | 92                   | 0.6                   | 0.5                | 2                    |
-| 106        | Fiona        | Science | 92    | 2       | 1   | 1                | Fiona                 | George               | Hannah                 | NULL                       | 5                     | 78                   | 92                   | 1                     | 0.75               | 3                    |
-| 108        | Hannah       | Science | 92    | 4       | 1   | 1                | Fiona                 | George               | Emma                   | Fiona                      | 5                     | 78                   | 92                   | 1                     | 0.75               | 4                    |

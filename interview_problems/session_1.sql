@@ -1,150 +1,87 @@
--- We will be using the sql_problems database.
+-- ======================================================================
+-- INTERVIEW PROBLEM 1 
+-- ======================================================================
+/*
+-- StrataScratch - [LINK](https://platform.stratascratch.com/coding/10285-acceptance-rate-by-date?python=&code_type=1)
 
-CREATE DATABASE sql_problems;
+Q. Acceptance Rate By Date
 
--- ============================================================
--- Interview Problem 1
--- ============================================================
+What is the overall friend acceptance rate by date?
+	- Your output should have the rate of acceptances by the date the request was sent.
+	- Order by the earliest date to latest.
+
+Assume that each friend request starts by a user sending (i.e., user_id_sender)
+	- a friend request to another user (i.e., user_id_receiver) that's logged in
+	- the table with action = 'sent'. If the request is accepted, the table
+	- logs action = 'accepted'. If the request is not accepted, no record of
+	- action = 'accepted' is logged
+*/
 
 -- INSERT SCRIPT
 
--- Drop and recreate EU energy table
-DROP TABLE IF EXISTS fb_eu_energy;
-CREATE TABLE fb_eu_energy (
-    date        DATE,
-    consumption INT
-);
-
--- Drop and recreate Asia energy table
-DROP TABLE IF EXISTS fb_asia_energy;
-CREATE TABLE fb_asia_energy (
-    date        DATE,
-    consumption INT
-);
-
--- Drop and recreate NA energy table
-DROP TABLE IF EXISTS fb_na_energy;
-CREATE TABLE fb_na_energy (
-    date        DATE,
-    consumption INT
-);
-
--- Insert data into EU table
-INSERT INTO fb_eu_energy VALUES ('2020-01-01', 400);
-INSERT INTO fb_eu_energy VALUES ('2020-01-02', 350);
-INSERT INTO fb_eu_energy VALUES ('2020-01-03', 500);
-INSERT INTO fb_eu_energy VALUES ('2020-01-04', 500);
-INSERT INTO fb_eu_energy VALUES ('2020-01-07', 600);
-
--- Insert data into Asia table
-INSERT INTO fb_asia_energy VALUES ('2020-01-01', 400);
-INSERT INTO fb_asia_energy VALUES ('2020-01-02', 400);
-INSERT INTO fb_asia_energy VALUES ('2020-01-04', 675);
-INSERT INTO fb_asia_energy VALUES ('2020-01-05', 1200);
-INSERT INTO fb_asia_energy VALUES ('2020-01-06', 750);
-INSERT INTO fb_asia_energy VALUES ('2020-01-07', 400);
-
--- Insert data into NA table
-INSERT INTO fb_na_energy VALUES ('2020-01-01', 250);
-INSERT INTO fb_na_energy VALUES ('2020-01-02', 375);
-INSERT INTO fb_na_energy VALUES ('2020-01-03', 600);
-INSERT INTO fb_na_energy VALUES ('2020-01-06', 500);
-INSERT INTO fb_na_energy VALUES ('2020-01-07', 250);
-
--- Check the data
-SELECT * FROM fb_eu_energy;
-SELECT * FROM fb_asia_energy;
-SELECT * FROM fb_na_energy;
-
-/* 
-===== PROBLEM =====
-
-Find the date with the highest total energy consumption from the Meta/Facebook data centers.
-
-Output:
-    - The date
-    - The total energy consumption across all data centers
-
-Note: If there are multiple days with the same highest energy consumption, display all such dates.
-*/
-
--- ===== SOLUTION =====
-
-/*
-Step 1: Combine all three data center tables.  
-    - We use UNION ALL (not JOIN) to avoid losing rows.  
-Step 3: Apply RANK() over total consumption in descending order.  
-    - This lets us capture ties for highest consumption.  
-Step 4: Filter only rows with rnk = 1 (the maximum).  
-*/
-
-WITH all_data_centers AS (
-    SELECT * FROM fb_eu_energy
-    UNION ALL
-    SELECT * FROM fb_asia_energy
-    UNION ALL
-    SELECT * FROM fb_na_energy
-)
-,date_wise_consumption AS (
-    SELECT 
-        date,
-        SUM(consumption) AS total_energy_consumption,
-        RANK() OVER (ORDER BY SUM(consumption) DESC) AS rnk
-    FROM all_data_centers
-    GROUP BY date
-)
-SELECT 
-    date,
-    total_energy_consumption
-FROM date_wise_consumption
-WHERE rnk = 1;
-
-
--- ============================================================
--- Interview Problem 2
--- ============================================================
-
--- From the students table, write a SQL query to interchange the adjacent student names.
--- Note: If there are no adjacent students, the student name should stay the same.
-
-
--- Setup: Create Students Table
-
-DROP TABLE IF EXISTS students;
-
-CREATE TABLE students (
-    id           INT PRIMARY KEY,
-    student_name VARCHAR(50) NOT NULL
+-- Create table
+CREATE TABLE fb_friend_requests (
+    user_id_sender   VARCHAR(20),
+    user_id_receiver VARCHAR(20),
+    date             DATE,
+    action           VARCHAR(20)
 );
 
 -- Insert sample data
-INSERT INTO students (id, student_name) VALUES
-    (1, 'James'),
-    (2, 'Michael'),
-    (3, 'George'),
-    (4, 'Stewart'),
-    (5, 'Robin');
+INSERT INTO fb_friend_requests VALUES 
+('ad4943sdz',      '948ksx123d',   '2020-01-04', 'sent'),
+('ad4943sdz',      '948ksx123d',   '2020-01-06', 'accepted'),
+('dfdfxf9483',     '9djjjd9283',   '2020-01-04', 'sent'),
+('dfdfxf9483',     '9djjjd9283',   '2020-01-15', 'accepted'),
+('ffdfff4234234',  'lpjzjdi4949',  '2020-01-06', 'sent'),
+('fffkfld9499',    '993lsldidif',  '2020-01-06', 'sent'),
+('fffkfld9499',    '993lsldidif',  '2020-01-10', 'accepted'),
+('fg503kdsdd',     'ofp049dkd',    '2020-01-04', 'sent'),
+('fg503kdsdd',     'ofp049dkd',    '2020-01-10', 'accepted'),
+('hh643dfert',     '847jfkf203',   '2020-01-04', 'sent'),
+('r4gfgf2344',     '234ddr4545',   '2020-01-06', 'sent'),
+('r4gfgf2344',     '234ddr4545',   '2020-01-11', 'accepted');
 
--- Check the data
-SELECT * FROM students;
+SELECT *
+FROM fb_friend_requests;
 
+-- Problem Breakdown
+-- 1) Find total requests that were `sent` each day
+-- 2) Find total requests that were `accepted` each day
+-- 3) Calculate the rate of acceptance = total accepted / total sent
 
--- ===== SOLUTION =====
+-- 1) Find total requests that were `sent` each day
+WITH sent_requests AS(
+SELECT
+    date
+    , COUNT(action) AS sent_count
+FROM fb_friend_requests
+WHERE action = 'sent'
+GROUP BY date
+)
+-- 2) Find total requests that were `accepted` each day
 
-/*
-Logic:
-1. The CASE statement checks if the ID is even or odd.
-2. For odd IDs, LEAD looks ahead to the next row (the adjacent even ID) to get its name.
-3. For even IDs, LAG looks back at the previous row (the adjacent odd ID) to get its name.
-4. The OVER (ORDER BY id) clause ensures the functions operate on rows in the correct order.
-5. The third argument in LEAD (student_name) acts as a default value, handling the last odd-numbered row correctly.
-*/
+, accepted_requests AS(
+SELECT
+    sent_rq.date
+    , COUNT(sent_rq.action) AS accepted_count
+FROM fb_friend_requests sent_rq
+JOIN fb_friend_requests accptd
+    ON sent_rq.user_id_sender = accptd.user_id_sender
+        AND sent_rq.user_id_receiver = accptd.user_id_receiver
+WHERE sent_rq.action = 'sent' AND accptd.action = 'accepted'
+GROUP BY sent_rq.date
+)
 
 SELECT
-    id
-    ,student_name
-    ,CASE
-        WHEN id%2 = 0 THEN LAG(student_name,1) OVER (ORDER BY id)
-        ELSE LEAD(student_name,1,student_name) OVER (ORDER BY id)
-    END AS swapped_student_name
-FROM students;
+    s.DATE
+    , CONCAT(CAST(ROUND(( CAST(a.accepted_count AS DECIMAL) / CAST(s.sent_count AS DECIMAL)),2) * 100 AS INT), '%') AS acceptance_rate
+FROM sent_requests s
+JOIN accepted_requests a 
+    ON s.date = a.date;
+
+
+-- ======================================================================
+-- INTERVIEW PROBLEM 2
+-- ======================================================================
+
