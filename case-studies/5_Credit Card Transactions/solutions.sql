@@ -17,6 +17,15 @@ FROM TransactionBase t
 JOIN CardBase c ON t.Credit_Card_ID = c.card_number
 WHERE t.transaction_value > 49000
 
+/* OUTPUT
+
+| Count_of_cx |
+| ----------- |
+| 166         |
+
+*/
+
+
 /*
 -- ===================================================================================================
 2. Premium eligibility
@@ -29,6 +38,17 @@ SELECT
 FROM CustomerBase cb 
 JOIN CardBase crd ON crd.Cust_ID = cb.Cust_ID
 WHERE crd.Card_Family = 'Premium';
+
+/* OUTPUT
+
+| Customer_Segment |
+| ---------------- |
+| Gold             |
+| Diamond          |
+| Platinum         |
+
+*/
+
 
 /*
 -- ===================================================================================================
@@ -43,6 +63,15 @@ SELECT
 FROM TransactionBase tb
 JOIN FraudBase fb ON tb.Transaction_ID = fb.Transaction_ID
 JOIN CardBase cb ON cb.Card_Number = tb.Credit_Card_ID
+
+/* OUTPUT
+
+| max_limit | min_limit |
+| --------- | --------- |
+| 879000    | 2000      |
+
+*/
+
 
 /*
 -- ===================================================================================================
@@ -59,6 +88,17 @@ JOIN FraudBase fb ON tb.Transaction_ID = fb.Transaction_ID
 JOIN CardBase cb ON cb.Card_Number = tb.Credit_Card_ID
 JOIN CustomerBase cxb ON cxb.Cust_ID = cb.Cust_ID
 GROUP BY cb.Card_Family;
+
+/* OUTPUT
+
+| Card_Family | avg_age |
+| ----------- | ------- |
+| Premium     | 35      |
+| Gold        | 36      |
+| Platinum    | 32      |
+
+*/
+
 
 /*
 -- ===================================================================================================
@@ -97,6 +137,15 @@ WHERE fraud_transactions = (SELECT MAX(fraud_transactions) FROM fraud_counts);
 -- We can also solve it using RANK() or DENSE_RANK() Window Functions, but the above method in approach 2 could be more performant.
 
 
+/* OUTPUT
+
+| mon       | no_of_fraud_trns |
+| --------- | ---------------- |
+| September | 14               |
+
+*/
+
+
 /*
 -- ===================================================================================================
 6. Top legitimate spender
@@ -123,10 +172,19 @@ WHERE total_transaction_value = (SELECT MAX(total_transaction_value) FROM cte)
 
 
 
+/* OUTPUT
+
+| cust_id | total_transaction_value |
+| ------- | ----------------------- |
+| CC91963 | 1448581                 |
+
+*/
+
+
 /*
 -- ===================================================================================================
 7. Inactive customers 
-   - Find customers who have not done a single transaction.
+   - Find customers who have not done a single fraudulent transaction.
 -- ===================================================================================================
 */
 
@@ -138,6 +196,13 @@ LEFT JOIN CardBase cb
 LEFT JOIN Transactionbase tb
    ON cb.Card_Number = tb.Credit_Card_ID
 WHERE tb.Transaction_ID IS NULL
+
+/* OUTPUT
+
+5192 Customer
+
+*/
+
 
 /*
 -- ===================================================================================================
@@ -152,6 +217,17 @@ SELECT
    , MAX(Credit_Limit) AS max_limit
 FROM CardBase
 GROUP BY card_family
+
+/* OUTPUT
+
+| card_family | min_limit | max_limit |
+| ----------- | --------- | --------- |
+| Gold        | 2000      | 50000     |
+| Platinum    | 51000     | 200000    |
+| Premium     | 108000    | 899000    |
+
+*/
+
 
 /*
 -- ===================================================================================================
@@ -198,6 +274,24 @@ JOIN CardBase cb ON tb.credit_card_id = cb.card_number
 JOIN CustomerBase cxb ON cb.cust_id = cxb.cust_id;
 
 
+/* OUTPUT
+
+| age group | total_transaction_value |
+| --------- | ----------------------- |
+| 0-20 yrs  | 5553480                 |
+| 20-30 yrs | 78340569                |
+| 30-40 yrs | 75549759                |
+| 40-50 yrs | 88143605                |
+
+--
+
+| trns_value_0_to_20 | trns_value_20_to_30 | trns_value_30_to_40 | trns_value_40_to_50 | trns_value_greater_than_50 |
+| ------------------ | ------------------- | ------------------- | ------------------- | -------------------------- |
+| 5553480            | 78340569            | 75549759            | 88143605            | 0                          |
+
+*/
+
+
 /*
 -- ===================================================================================================
 10. Card type transaction summary
@@ -230,3 +324,12 @@ UNION ALL
 SELECT card_family, transaction_count, total_transaction_value, 'Highest total transaction value' AS metric
 FROM cte
 WHERE rnk_value = 1;
+
+/* OUTPUT
+
+| card_family | transaction_count | total transaction_value NT | metric                         |
+| ----------- | ----------------- | -------------------------- | ------------------------------ |
+| Premium     | 4054              | 100002750                  | Highest number of transactions |
+| Premium     | 4054              | 100002750                  | Highest total transaction      |
+
+*/
