@@ -1,0 +1,7 @@
+select item
+from (
+	select customer,item, count(1)
+	, rank() over(order by count(1) desc) as rnk
+	from cafe_orders
+	group by customer,item) x
+where x.rnk <=2;	

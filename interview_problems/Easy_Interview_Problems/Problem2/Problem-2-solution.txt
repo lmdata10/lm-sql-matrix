@@ -1,0 +1,13 @@
+
+select * from all_names 
+where names !~ '^[A-Za-z][A-Za-z]*[A-Za-z]$';
+
+
+-- Explanation:
+~   		==> Means REGEX search in PostgreSQL. Searches for a match based on given pattern.
+!~  		==> Reverse of match (kind of NOT LIKE)
+^ 			==> Indicates starting character
+[A-Za-z]	==> Any one character between alphabets A to Z in both uppercase and lowercase.
+^[A-Za-z]	==> First character has to be an alphabet betwen A to Z (either uppercase and lowercase)
+*			==> Indicates multiple entries of previous characters is accepted
+$			==> Indicates the last character must be the pattern prvided prior to $ symbol.

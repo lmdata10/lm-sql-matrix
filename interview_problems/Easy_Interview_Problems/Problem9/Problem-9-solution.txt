@@ -1,0 +1,6 @@
+select * 
+, row_number() over(partition by salesman order by customer) 
+||' of '||
+ count(customer) over(partition by salesman order by customer
+range between unbounded preceding and unbounded following) as total_customers
+from sales_team;

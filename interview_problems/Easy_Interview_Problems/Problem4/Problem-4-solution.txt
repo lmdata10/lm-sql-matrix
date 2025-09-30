@@ -1,0 +1,4 @@
+select student_name , count(1)
+from student_semesters
+group by student_name
+having count(1) >= 3;

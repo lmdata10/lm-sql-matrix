@@ -1,0 +1,9 @@
+with cte as 
+	(select *
+	, CASE WHEN percentage > lead(percentage) over(partition by ID Order by semester) 
+				then 1 else 0 end flag
+	from student_marks)
+select student_name--, sum(flag)
+from cte
+group by student_name
+having sum(flag) = 0;

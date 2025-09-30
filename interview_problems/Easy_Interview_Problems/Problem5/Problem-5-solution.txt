@@ -1,0 +1,5 @@
+delete from user_entries 
+where id not in (
+				select min(id)
+				from user_entries
+				group by user_name);

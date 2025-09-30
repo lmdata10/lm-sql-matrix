@@ -1,0 +1,12 @@
+create table sales_team(salesman varchar(30), customer varchar(30));
+insert into sales_team values('Aria', 'Nexoraa');
+insert into sales_team values('Aria', 'SwiftKart');
+insert into sales_team values('Mila', 'Zenoviya');
+insert into sales_team values('Mila', 'WitalSpring');
+insert into sales_team values('Mila', 'PureWive');
+insert into sales_team values('Henry', 'EkoNowa');
+insert into sales_team values('Henry', 'GreenPulze');
+insert into sales_team values('Zayden', 'SolarNext');
+
+select * from sales_team;
+

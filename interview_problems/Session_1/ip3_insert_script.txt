@@ -1,0 +1,120 @@
+create table db_employee
+    (
+        id              int ,
+        first_name      varchar(50),
+        last_name       varchar(50),
+        salary          int,
+        department_id   int
+    );
+create table db_dept
+    (
+        id              int,
+        department      varchar(50)
+    );
+insert into db_employee values(10301,'Keith','Morgan',27056,2);
+insert into db_employee values(10302,'Tyler','Booth',32199,3);
+insert into db_employee values(10303,'Clifford','Nguyen',32165,2);
+insert into db_employee values(10304,'Mary','Jones',49488,3);
+insert into db_employee values(10305,'Melissa','Lucero',27024,3);
+insert into db_employee values(10306,'Ashley','Li',28516,4);
+insert into db_employee values(10307,'Joseph','Solomon',19945,1);
+insert into db_employee values(10308,'Anthony','Sanchez',43801,3);
+insert into db_employee values(10309,'Katherine','Huffman',12984,4);
+insert into db_employee values(10310,'Dawn','Foley',28902,2);
+insert into db_employee values(10311,'Melissa','Holmes',33575,1);
+insert into db_employee values(10312,'Kathleen','Davis',44579,2);
+insert into db_employee values(10313,'Adam','Simmons',15442,6);
+insert into db_employee values(10314,'Desiree','Brewer',37494,6);
+insert into db_employee values(10315,'Sierra','Anderson',20592,6);
+insert into db_employee values(10316,'Beth','Torres',34902,1);
+insert into db_employee values(10317,'Pamela','Rodriguez',48187,4);
+insert into db_employee values(10318,'Jessica','Austin',43154,2);
+insert into db_employee values(10319,'Stephanie','Gamble',31160,2);
+insert into db_employee values(10320,'Gregory','Cook',22681,4);
+insert into db_employee values(10321,'Debra','Knapp',17844,5);
+insert into db_employee values(10322,'Paul','Horton',37431,3);
+insert into db_employee values(10323,'Henry','Solis',45269,4);
+insert into db_employee values(10324,'William','Brewer',15947,1);
+insert into db_employee values(10325,'Brian','Nelson',27006,1);
+insert into db_employee values(10326,'Randall','Kramer',20695,2);
+insert into db_employee values(10327,'Mary','Baker',46654,5);
+insert into db_employee values(10328,'Gene','Shepard',10143,3);
+insert into db_employee values(10329,'Christopher','Ramos',37710,4);
+insert into db_employee values(10330,'Robin','Horne',34679,3);
+insert into db_employee values(10331,'Alan','Wilson',43730,5);
+insert into db_employee values(10332,'Jessica','Mccall',40882,5);
+insert into db_employee values(10333,'Jennifer','Blankenship',13433,4);
+insert into db_employee values(10334,'Michael','Mitchell',19044,2);
+insert into db_employee values(10335,'Johnny','Fritz',40638,6);
+insert into db_employee values(10336,'Gloria','Krause',21670,3);
+insert into db_employee values(10337,'Jonathan','Holt',30267,2);
+insert into db_employee values(10338,'Anthony','Bullock',39362,6);
+insert into db_employee values(10339,'Robert','Mills',13188,1);
+insert into db_employee values(10340,'Joshua','Stephens',29339,3);
+insert into db_employee values(10341,'Alison','Hernandez',45144,3);
+insert into db_employee values(10342,'Derek','Morgan',11286,2);
+insert into db_employee values(10343,'Anthony','Morgan',15145,5);
+insert into db_employee values(10344,'Jenny','Owens',40606,4);
+insert into db_employee values(10345,'Elizabeth','Raymond',33050,5);
+insert into db_employee values(10346,'Philip','Jones',46356,2);
+insert into db_employee values(10347,'Seth','Gross',25681,5);
+insert into db_employee values(10348,'Edwin','Johnson',35144,5);
+insert into db_employee values(10349,'Ryan','Barnes',25085,1);
+insert into db_employee values(10350,'Patrick','Booth',39940,1);
+insert into db_employee values(10351,'Andrew','Lopez',18997,3);
+insert into db_employee values(10352,'Sarah','Mcknight',31082,5);
+insert into db_employee values(10353,'Patricia','Lawson',15808,1);
+insert into db_employee values(10354,'Taylor','Tucker',20225,3);
+insert into db_employee values(10355,'Aaron','Fischer',45787,1);
+insert into db_employee values(10356,'Wendy','Brown',30432,4);
+insert into db_employee values(10357,'Michael','Robertson',47657,5);
+insert into db_employee values(10358,'Edward','Wolf',45649,1);
+insert into db_employee values(10359,'Jacob','Brown',28782,6);
+insert into db_employee values(10360,'Randy','Lee',45121,4);
+insert into db_employee values(10361,'Xavier','Pace',18842,3);
+insert into db_employee values(10362,'Anita','Chen',19669,6);
+insert into db_employee values(10363,'David','Chapman',15426,4);
+insert into db_employee values(10364,'Elijah','Potter',44472,2);
+insert into db_employee values(10365,'Craig','West',37278,1);
+insert into db_employee values(10366,'Heather','Schroeder',40546,3);
+insert into db_employee values(10367,'Jeremy','Phillips',36605,4);
+insert into db_employee values(10368,'William','Hall',20534,4);
+insert into db_employee values(10369,'Kimberly','White',31456,3);
+insert into db_employee values(10370,'Susan','Fisher',32308,1);
+insert into db_employee values(10371,'Deborah','Duncan',18517,6);
+insert into db_employee values(10372,'Lawrence','Smith',11636,3);
+insert into db_employee values(10373,'Meghan','Martinez',12993,2);
+insert into db_employee values(10374,'Paige','Mills',19448,6);
+insert into db_employee values(10375,'Michael','Johnson',34888,6);
+insert into db_employee values(10376,'Lori','Burns',14603,3);
+insert into db_employee values(10377,'Stephanie','Chavez',30196,4);
+insert into db_employee values(10378,'Luis','Sheppard',23532,6);
+insert into db_employee values(10379,'Rebecca','Turner',28312,2);
+insert into db_employee values(10380,'Justin','Jones',31170,6);
+insert into db_employee values(10381,'Stephanie','Mejia',11913,3);
+insert into db_employee values(10382,'Sharon','Liu',34620,5);
+insert into db_employee values(10383,'Jonathan','Lester',30517,2);
+insert into db_employee values(10384,'Olivia','Hoffman',44696,3);
+insert into db_employee values(10385,'Michelle','Miller',36911,2);
+insert into db_employee values(10386,'Jacob','Carr',20676,2);
+insert into db_employee values(10387,'Ashley','Todd',49926,6);
+insert into db_employee values(10388,'Michael','Harvey',18280,3);
+insert into db_employee values(10389,'Anthony','Molina',26304,3);
+insert into db_employee values(10390,'Maria','Warren',20599,5);
+insert into db_employee values(10391,'Kenneth','Smith',28762,6);
+insert into db_employee values(10392,'Melissa','Nichols',35266,4);
+insert into db_employee values(10393,'Lori','Page',24569,3);
+insert into db_employee values(10394,'Jacqueline','Stewart',41454,4);
+insert into db_employee values(10395,'Victor','Robinson',28034,6);
+insert into db_employee values(10396,'Meghan','Henderson',28733,2);
+insert into db_employee values(10397,'Heather','Kelly',42487,6);
+insert into db_employee values(10398,'Alexander','Abbott',15334,2);
+insert into db_employee values(10399,'Christopher','Ryan',33224,3);
+insert into db_employee values(10400,'Chelsea','Gonzalez',20785,1);
+
+insert into db_dept values(1,'engineering');
+insert into db_dept values(2,'human resource');
+insert into db_dept values(3,'operation');
+insert into db_dept values(4,'marketing');
+insert into db_dept values(5,'sales');
+insert into db_dept values(6,'customer care');

@@ -1,0 +1,4 @@
+select country 
+from (select distinct * from countries) c
+group by country 
+having count(1) > 1

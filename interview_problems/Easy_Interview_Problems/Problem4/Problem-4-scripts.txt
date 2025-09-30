@@ -1,0 +1,27 @@
+drop table if exists student_semesters ;
+create table student_semesters 
+(
+	id				int,
+	student_name	varchar(30),
+	semester		int
+);
+
+
+insert into student_semesters values(1, 'Aster', 1);
+insert into student_semesters values(1, 'Aster', 2);
+insert into student_semesters values(2, 'Nova', 1);
+insert into student_semesters values(2, 'Nova', 2);
+insert into student_semesters values(2, 'Nova', 3);
+insert into student_semesters values(3, 'Mila', 1);
+insert into student_semesters values(3, 'Mila', 2);
+insert into student_semesters values(3, 'Mila', 3);
+insert into student_semesters values(3, 'Mila', 4);
+
+insert into student_semesters values(4, 'Henry', 1);
+insert into student_semesters values(4, 'Henry', 2);
+insert into student_semesters values(4, 'Henry', 3);
+insert into student_semesters values(5, 'Aria', 1);
+insert into student_semesters values(5, 'Aria', 2);
+insert into student_semesters values(6, 'Zayden', 1);
+
+select * from student_semesters;

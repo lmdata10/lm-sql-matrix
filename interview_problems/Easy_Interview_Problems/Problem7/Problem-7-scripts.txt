@@ -1,0 +1,24 @@
+drop table if exists cafe_orders;
+create table cafe_orders
+(
+	id			int,
+	item		varchar(50),
+	customer	varchar(50),
+	price		decimal
+);
+insert into cafe_orders values(1, 'Cappuccino', 'Thoufiq', 17.5);
+insert into cafe_orders values(2, 'Black Tea', 'Thoufiq', 13.5);
+insert into cafe_orders values(3, 'Cappuccino', 'Thoufiq', 15.5);
+insert into cafe_orders values(4, 'Flat White', 'Thoufiq', 16.5);
+insert into cafe_orders values(5, 'Latte', 'Thoufiq', 18.5);
+insert into cafe_orders values(6, 'Latte', 'Thoufiq', 18.5);
+insert into cafe_orders values(7, 'Cappuccino', 'Thoufiq', 17.5);
+insert into cafe_orders values(8, 'Cappuccino', 'Thoufiq', 15.5);
+insert into cafe_orders values(9, 'Flat White', 'Thoufiq', 16.5);
+insert into cafe_orders values(10, 'Latte', 'Thoufiq', 19.5);
+insert into cafe_orders values(11, 'Black Tea', 'Thoufiq', 15.5);
+insert into cafe_orders values(12, 'Black Tea', 'Thoufiq', 14.5);
+insert into cafe_orders values(13, 'Cappuccino', 'Thoufiq', 19.5);
+insert into cafe_orders values(14, 'Black Tea', 'Thoufiq', 12.5);
+
+select * from cafe_orders;

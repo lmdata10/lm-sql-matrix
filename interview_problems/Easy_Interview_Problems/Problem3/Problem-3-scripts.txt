@@ -1,0 +1,24 @@
+drop table if exists student_marks ;
+create table student_marks 
+(
+	id				int,
+	student_name	varchar(30),
+	semester		int,
+	percentage		int
+);
+
+
+insert into student_marks values(1, 'Aster', 1,86);
+insert into student_marks values(1, 'Aster', 2,81);
+insert into student_marks values(1, 'Aster', 3,75);
+insert into student_marks values(1, 'Aster', 4,64);
+insert into student_marks values(2, 'Nova', 1,73);
+insert into student_marks values(2, 'Nova', 2,81);
+insert into student_marks values(2, 'Nova', 3,87);
+insert into student_marks values(2, 'Nova', 4,85);
+insert into student_marks values(3, 'Mila', 1,57);
+insert into student_marks values(3, 'Mila', 2,77);
+insert into student_marks values(3, 'Mila', 3,88);
+insert into student_marks values(3, 'Mila', 4,91);
+
+select * from student_marks;

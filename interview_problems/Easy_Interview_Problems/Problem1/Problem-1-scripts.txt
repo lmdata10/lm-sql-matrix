@@ -1,0 +1,13 @@
+
+create table drivers (driver1 varchar(20), driver2 varchar(20));
+
+insert into drivers values('Charles',	'Norris');
+insert into drivers values('Sainz',	'Max');
+insert into drivers values('Max',	'Piastri');
+insert into drivers values('Lewis',	'Russel');
+insert into drivers values('Alonso',	'Alonso');
+insert into drivers values('Vettel',	'Senna');
+insert into drivers values('Russel',	'Michael');
+
+
+select * from drivers;

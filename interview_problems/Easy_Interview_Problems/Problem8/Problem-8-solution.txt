@@ -1,0 +1,2 @@
+select * from bank_details
+where branch not in (select id from branch);

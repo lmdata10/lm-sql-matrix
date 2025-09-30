@@ -1,0 +1,9 @@
+drop table if exists ipl_teams;
+create table ipl_teams(team varchar(100));
+insert into ipl_teams values ('RCB');
+insert into ipl_teams values ('MI');
+insert into ipl_teams values ('KKR');
+insert into ipl_teams values ('CSK');
+
+select * from ipl_teams;
+

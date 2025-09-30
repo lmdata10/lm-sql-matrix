@@ -1,0 +1,16 @@
+drop table if exists countries;
+create table countries
+(
+	country		varchar(50),
+	continent	varchar(50)
+);
+insert into countries values('Egypt', 'Africa');
+insert into countries values('Poland', 'Europe');
+insert into countries values('India', 'Asia');
+insert into countries values('India', 'Asia');
+insert into countries values('Turkiye', 'Asia');
+insert into countries values('Turkiye', 'Europe');
+insert into countries values('Kazakhstan', 'Asia');
+insert into countries values('Kazakhstan', 'Europe');
+
+select * from countries;

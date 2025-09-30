@@ -1,0 +1,5 @@
+select t1.team as home_team
+, t2.team as away_team
+from ipl_teams t1
+join ipl_teams t2 on t1.team <> t2.team
+order by t1.team, t2.team;

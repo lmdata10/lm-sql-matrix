@@ -1,0 +1,22 @@
+drop table if exists user_entries ;
+create table user_entries 
+(
+	id			int,
+	user_name	varchar(30),
+	email		varchar(100)
+);
+
+insert into user_entries values(1,	'Aster'	,'aster@tfqmail.com');
+insert into user_entries values(2,	'Aster'	,'aster2@tfqmail.com');
+insert into user_entries values(3,	'Nova'	,'nova@tfqmail.com');
+insert into user_entries values(4,	'Nova'	,'nova@tfqmail.com');
+insert into user_entries values(5,	'Nova'	,'nova.correct1@tfqmail.com');
+insert into user_entries values(6,	'Mila'	,'mila@tfqmail.com');
+insert into user_entries values(7,	'Henry'	,'henry@tfqmail.com');
+insert into user_entries values(8,	'Henry'	,'henry@tfqmail.com');
+insert into user_entries values(9,	'Aria'	,'ariaa@tfqmail.com');
+insert into user_entries values(10,	'Aria'	,'aria@tfqmail.com');
+insert into user_entries values(11,	'Zayden'	,'zayden@tfqmail.com');
+
+
+select * from user_entries;

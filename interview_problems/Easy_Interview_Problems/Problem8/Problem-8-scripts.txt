@@ -1,0 +1,24 @@
+drop table if exists branch ;
+create table branch(id int, branch varchar(30));
+insert into branch values(1, 'Bangalore');
+insert into branch values(2, 'Mumbai');
+insert into branch values(3, 'Chennai');
+
+drop table if exists bank_details;
+create table bank_details
+(
+	id				int,
+	name			varchar(30),
+	branch			int,
+	customer_count	int,
+	employee_count	int
+);
+insert into bank_details values(1, 'HDFC Bank', 1, 5050, 85);
+insert into bank_details values(2, 'HDFC Bank', 2, 8500, 120);
+insert into bank_details values(3, 'HDFC Bank', 3, 6000, 100);
+insert into bank_details values(4, 'HDFC Bank', 3, 6800, 94);
+insert into bank_details values(5, 'HDFC Bank', 4, 3400, 45);
+insert into bank_details values(6, 'HDFC Bank', 5, 2300, 66);
+
+select * from branch;
+select * from bank_details;

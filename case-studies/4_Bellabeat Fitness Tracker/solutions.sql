@@ -24,6 +24,7 @@ SELECT
 , least_active
 FROM active_days;
 
+
 /*
 -- ==================================================================================
 Problem: Identify the customer who has the most effective sleep. Effective sleep is 

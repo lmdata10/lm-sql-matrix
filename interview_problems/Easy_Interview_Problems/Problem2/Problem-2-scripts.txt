@@ -1,0 +1,12 @@
+drop table if exists all_names(names varchar(20));
+create table all_names(names varchar(20));
+
+insert into all_names values('Thouf!q');
+insert into all_names values('T0ny');
+insert into all_names values('Hanan');
+insert into all_names values('Jimmy');
+insert into all_names values('David.');
+insert into all_names values('Ro bin');
+insert into all_names values('?Zeke');
+
+select * from all_names;
