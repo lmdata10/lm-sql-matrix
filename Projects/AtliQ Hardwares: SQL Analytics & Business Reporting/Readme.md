@@ -1,64 +1,242 @@
-## **AtliQ Hardwares: SQL Analytics & Business Reporting**
+# AtliQ Hardwares Industry Data Analytics
 
-### **Key Project Outcomes: $58M Growth, Market Optimization, and Forecast Strategy**
+[![SQL](https://img.shields.io/badge/SQL-MySQL-blue.svg)](https://www.mysql.com/) [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://claude.ai/chat/LICENSE) [![Status](https://img.shields.io/badge/Status-Complete-success.svg)](https://claude.ai/chat/edb1dbeb-9bd9-4387-9707-7e4eace1bde2)
 
-This project leverages advanced SQL to deliver **actionable business intelligence** for a hardware company across Finance, Sales, and Supply Chain domains.
+A comprehensive SQL analytics project exploring finance, customer performance, and supply chain optimization in the hardware industry.
 
-| Business Metric    | Result                                                         | Impact & Action                                                                         |
-| ------------------ | -------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Gross Sales Growth | **$58M** in FY 2021 (from $12.6M in 2020).                     | Identified **explosive, effective growth** to capitalize on.                            |
-| Top Markets        | India ($445M) and USA ($288M) are **primary revenue drivers**. | Confirmed focus areas for **strategic growth and resource allocation**.                 |
-| Forecast Accuracy  | Low accuracy (15-47%) across major markets.                    | Flagged immediate need to **refine forecasting models** and stabilize the supply chain. |
-| Process Efficiency | Automated 5+ key reports using **Stored Procedures**.          | Reduced manual work and enabled **instant, repeatable analysis** for stakeholders.      |
+## Overview
 
+This is an end-to-end data analytics project that demonstrates advanced SQL capabilities by extracting actionable insights from hardware industry data. The project analyzes over 1.5 million records across multiple fact and dimension tables, uncovering trends in financial performance, customer behavior, and supply chain efficiency.
+
+**Project Goals:**
+
+- Analyze financial metrics (P&L, gross sales, net sales)
+- Identify top-performing markets, customers, and products
+- Evaluate supply chain forecast accuracy
+- Optimize query performance for large datasets
+
+## 💼 Business Problem
+
+AtliQ Hardware needs to:
+
+1. **Track financial performance** across markets and product lines
+2. **Identify revenue drivers** among customers and products
+3. **Improve forecast accuracy** to optimize inventory and reduce costs
+4. **Make data-driven decisions** for strategic planning
+
+## ✨ Key Features
+
+### Finance Analysis
+
+- Monthly and yearly revenue tracking
+- P&L statement generation
+- Gross price and net sales calculations
+- Customer-level profitability analysis
+
+### Top Performers Analysis
+
+- Top N markets by net sales
+- Customer segmentation by revenue contribution
+- Product performance by division
+- Regional market analysis
+
+### Supply Chain Analysis
+
+- Forecast accuracy measurement
+- Year-over-year accuracy comparison
+- Absolute and net error analysis
+- Automated data synchronization with triggers
+
+### Performance Optimization
+
+- Query execution time reduced by 50%
+- Efficient use of generated columns
+- Strategic indexing and view creation
+
+## 🛠️ Technical Stack
+
+- **Database**: MySQL 8.0+
+- **IDE**: Visual Studio Code
+- **Version Control**: Git & GitHub
+- **Languages**: SQL
+
+## 🔍 Key Analyses
+
+### 1. Finance Analysis
+
+**Objectives:**
+
+- Generate monthly product sales reports
+- Track gross sales aggregates
+- Create yearly revenue summaries
+- Assign market performance badges
+
+**Key Queries:**
+
+```sql
+-- Monthly sales for specific customer (FY 2021)
+SELECT 
+    s.date,
+    p.product,
+    s.sold_quantity,
+    ROUND(g.gross_price * s.sold_quantity, 2) AS gross_price_total
+FROM fact_sales_monthly s
+JOIN dim_product p ON s.product_code = p.product_code
+JOIN fact_gross_price g ON g.product_code = s.product_code
+WHERE s.customer_code = 90002002 
+    AND get_fiscal_year(s.date) = 2021;
+```
+
+### 2. Top Performers Analysis
+
+**Objectives:**
+
+- Identify top markets by net sales
+- Rank customers by revenue contribution
+- Analyze product performance by division
+- Compare regional performance
+
+**Performance Optimization:**
+
+- Added generated `fiscal_year` column to reduce function calls
+- Created layered views for complex calculations
+- Achieved 50% query execution time reduction
+
+### 3. Supply Chain Analysis
+
+**Objectives:**
+
+- Measure forecast accuracy across customers
+- Calculate net and absolute errors
+- Compare year-over-year performance
+- Automate data integration with triggers
+
+**Key Metrics:**
+
+- Forecast Accuracy = 100% - Absolute Error %
+- Net Error = Forecast - Actual
+- Absolute Error = |Forecast - Actual|
+
+## 📊 Results & Insights
+
+### Financial Performance
+
+- **363% growth** from 2020 ($12.6M) to 2021 ($58M)
+- Consistent year-over-year revenue increase
+- Strong upward trajectory indicating market expansion
+
+### Market Leaders
+
+|Market|Net Sales ($M)|% of Total|
+|---|---|---|
+|India|445.25|35.2%|
+|USA|288.90|22.8%|
+|South Korea|121.83|9.6%|
+
+### Top Customers
+
+|Customer|Net Sales ($M)|
+|---|---|
+|Amazon|218.21|
+|Atliq Exclusive|159.31|
+|Atliq e Store|133.08|
+
+### Top Products
+
+|Product|Net Sales ($M)|
+|---|---|
+|AQ BZ Allin1 Gen 2|84.63|
+|AQ HOME Allin1 Gen 2|78.84|
+|AQ Smash 2|73.55|
+
+### Supply Chain Findings
+
+- Forecast accuracy ranges **15-47%** (requires improvement)
+- Multiple customers experienced **declining accuracy** year-over-year
+
+## 🎓 SQL Techniques Used
+
+### Advanced Queries
+
+- ✅ Complex JOINs (INNER, LEFT, FULL via UNION)
+- ✅ Common Table Expressions (CTEs)
+- ✅ Window Functions (DENSE_RANK, SUM OVER)
+- ✅ Subqueries and nested queries
+
+### Database Objects
+
+- ✅ User-Defined Functions (fiscal year, fiscal quarter)
+- ✅ Stored Procedures (reusable reports)
+- ✅ Views (layered calculations)
+- ✅ Triggers (automated data sync)
+
+### Performance Optimization
+
+- ✅ Generated columns for computed values
+- ✅ Strategic indexing
+- ✅ Query execution analysis with EXPLAIN ANALYZE
+- ✅ Efficient aggregation techniques
+
+### Data Management
+
+- ✅ ETL pipeline implementation
+- ✅ NULL value handling
+- ✅ Data integrity constraints
+- ✅ Transaction management
+
+### Usage Examples
+
+**Get monthly gross sales for a customer:**
+
+```sql
+CALL get_monthly_gross_sales_for_customer(90002002);
+```
+
+**Get top 5 markets by net sales:**
+
+```sql
+CALL get_top_n_markets_by_net_sales(2021, 5);
+```
+
+**Get forecast accuracy report:**
+
+```sql
+CALL get_forecast_accuracy(2021);
+```
+
+**Assign market badge:**
+
+```sql
+CALL get_market_badge('India', 2021, @badge);
+SELECT @badge;
+```
+
+## 📈 Project Stats
+
+- **Lines of SQL Code**: 1,000+
+- **Database Tables**: 10+
+- **Stored Procedures**: 6
+- **User-Defined Functions**: 2
+- **Views**: 4
+- **Triggers**: 2
+- **Records Analyzed**: 1.5M+
+
+**Full Documentation:** [Detailed Project Documentation](/Projects/AtliQ%20Hardwares:%20SQL%20Analytics%20&%20Business%20Reporting/Detailed-project-walk-through.md)
+
+## Connect with Me
+
+Limesh Mahial
+- LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/lmahial)
+- Email: lm.datadev.10@gmail.com
+
+## 🙏 Acknowledgments
+
+- **[Codebasics](https://codebasics.io/)** for the project inspiration
+- **[AtliQ Technologies](https://www.atliq.com/)** for the business case study and dataset.
+- MySQL [documentation](https://dev.mysql.com/doc/) and community
 
 ---
 
-### ⚙️ **Technical Mastery & Data Engineering**
+⭐ **If you find this project helpful, please consider giving it a star!**
 
-This project was a hands-on exercise in optimizing performance and building scalable data solutions.
-
-- **Advanced SQL & Optimization:** Mastered **CTEs, Window Functions (`DENSE_RANK()`, `SUM() OVER()`), Joins, and Views** to model complex business logic. Used `EXPLAIN ANALYZE` to troubleshoot and implement performance enhancements (e.g., adding a generated `fiscal_year` column to a fact table).
-
-- **Database Objects:** Implemented **Stored Procedures** (5+) to streamline reporting for Top Markets, Customers, and Forecast Accuracy.
-
-- **Data Pipeline:** Created a new `fact_act_estimate` table using a **FULL JOIN simulation (`LEFT JOIN` + `UNION`)** to handle NULLs in sales and forecast data. Implemented **Database Triggers** to ensure this new table is automatically updated with new sales and forecast entries, demonstrating basic ETL/data warehousing skills.
-
-- **Tools:** **MySQL, MySQL Workbench, Visual Studio Code, Version Control (Git/GitHub)**.
-
----
-
-### 📊 **Core Analysis Highlights**
-
-#### **1. Financial Health (Finance Analysis)**
-
-- Developed a P&L-focused analysis to report key metrics: Gross Price, Net Sales, COGS, and Gross Margin.
-- Implemented **User-Defined Functions (UDFs)** for `get_fiscal_year` and `get_fiscal_quarter` to correctly align analysis with the company's financial calendar.
-- **Automation:** Developed a stored procedure (`get_monthly_gross_sales_for_customer`) to quickly generate monthly gross sales reports for _any_ customer.
-
-#### **2. Top Performers (Sales & Market Analysis)**
-
-- Created a dimensional model by developing **three crucial database views** to calculate Net Sales: `sales_preinvoice_discount`, `sales_postinvoice_discount`, and the final `net_sales` view.
-- Identified **Top 5 Markets, Customers (Amazon, Atliq Exclusive)**, and **Products (AQ BZ Allin1 Gen 2)** by Net Sales for FY 2022.
-- Designed a multi-level report to retrieve the **Top 2 Markets within each geographical Region** (APAC, EU, NA, LATAM) based on gross sales.
-
-#### **3. Supply Chain & Forecasting (SCM Analysis)**
-
-- Calculated **Forecast Accuracy** (`100% - Absolute Error %`) for all customers.
-- Identified customers with the **most significant decline** in forecast accuracy from **FY 2020 to FY 2021**, pinpointing specific areas (e.g., South Korea) with poor performance (e.g., 15-17% accuracy).
-- Created a stored procedure (`get_forecast_accuracy`) for immediate, recurring monitoring of supply chain health.
-
----
-
-### **What I Learned (Execution Over Preparation)**
-
-This project forced me to shift from theoretical planning to **hands-on execution**. The most critical learning came from **solving real-world data problems:**
-
-1. **Modeling Complexity:** Structuring multiple layers of deductions (pre- and post-invoice) into a coherent, calculated **Net Sales metric** via database views.
-2. **Performance Tuning:** The hard lesson that a simple UDF call on a filter can be a massive bottleneck, leading to the **implementation of a generated column** for a 50% speed improvement.
-3. **Data Quality:** Strategically using `LEFT JOIN` + `UNION` to simulate a `FULL JOIN` and define a consistent process for handling **NULL values (missing sales/forecast data)** in a new core reporting table.
-
----
-### **Next Steps**
-
-I’m currently focused on **translating these SQL insights into a BI dashboard** (Power BI/Tableau) to complete the data storytelling process.
+🔗 **Connect with me for collaborations and opportunities!**
