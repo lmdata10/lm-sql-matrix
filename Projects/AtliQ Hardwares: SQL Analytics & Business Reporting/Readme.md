@@ -226,17 +226,11 @@ SELECT @badge;
 ## Connect with Me
 
 Limesh Mahial
-- LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/lmahial)
-- Email: lm.datadev.10@gmail.com
+- LinkedIn: [linkedin.com/in/lmahial](https://linkedin.com/in/lmahial)
+- Email: [lm.datadev.10@gmail.com](mailto:lm.datadev.10@gmail.com)
 
 ## 🙏 Acknowledgments
 
 - **[Codebasics](https://codebasics.io/)** for the project inspiration
 - **[AtliQ Technologies](https://www.atliq.com/)** for the business case study and dataset.
 - MySQL [documentation](https://dev.mysql.com/doc/) and community
-
----
-
-⭐ **If you find this project helpful, please consider giving it a star!**
-
-🔗 **Connect with me for collaborations and opportunities!**
